@@ -1,0 +1,26 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"EngineVersion": "5.1",
+	"FriendlyName": "Actor Pooling Subsystem",
+	"Description": "An Actor Pooling subsystem for performant spawning and despawning of actors",
+	"Category": "Other",
+	"CreatedBy": "Laird Shingleton",
+	"CreatedByURL": "www.github.com/lairdwt",
+	"DocsURL": "",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/...to be added after submission",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": 
+	[
+		{
+			"Name": "ActorPoolingSubsystem",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
