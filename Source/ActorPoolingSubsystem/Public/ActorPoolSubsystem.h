@@ -10,9 +10,8 @@
 
 #include "ActorPoolSubsystem.generated.h"
 
-
 // Broadcast Spawn to listeners
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FSpawnDelegate, AActor*, SpawnedActor, const FTransform&, SpawnTransform)
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FSpawnDelegate, AActor*, Actor, const FTransform&, Transform)
 
 UCLASS()
 class ACTORPOOLINGSUBSYSTEM_API UActorPoolSubsystem : public UGameInstanceSubsystem
@@ -34,9 +33,12 @@ private:
 	//
 	FActorSpawnParameters SpawnParameters;
 
-	// OnSpawn Delegate
+	// OnSpawn and OnReturn Delegate
 	UPROPERTY(BlueprintAssignable)
-	FSpawnDelegate OnActorSpawnDelegate;
+		FSpawnDelegate OnActorSpawnDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+		FSpawnDelegate OnActorReturnToPoolDelegate;
 	
 	// Handle pool reset when level is changed
 	void HandleLevelChanged(ULevel*, UWorld*);
@@ -53,9 +55,9 @@ public:
 	// Functions marked "_LowLevel" are for c++ use, can skip some Blueprint required type conversions
 	//
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Set Actor Inactive"), Category = "Pool")
-		void SetActorInactive(AActor* Actor);
+		void SetActorStandby(AActor* Actor);
 
-		void inline SetActorInactive_LowLevel(TObjectPtr<AActor> Actor);
+		void inline SetActorStandby_LowLevel(TObjectPtr<AActor> Actor);
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Set Actor Active"), Category = "Pool")
 		void SetActorActive(AActor* Actor, const FTransform& Transform, AActor* Owner);
@@ -68,9 +70,11 @@ public:
 		TObjectPtr<AActor> inline SpawnActor_LowLevel(TSubclassOf<AActor> Class, const FTransform& Transform, const ESpawnActorCollisionHandlingMethod CollisionHandling = ESpawnActorCollisionHandlingMethod::AlwaysSpawn, TWeakObjectPtr<AActor> Owner = nullptr, bool BroadcastSpawn = false);
 private:
 		void BroadcastActorSpawned(AActor* SpawnedActor, const FTransform& SpawnLocation);
+
+		void BroadcastActorReturned(AActor* SpawnedActor, const FTransform& SpawnLocation);
 public:
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Return Actor To Pool", DefaultToSelf = "Actor"), Category = "Pool")
-		void ReturnActorToPool(AActor* Actor);
+		void ReturnActorToPool(AActor* Actor, bool BroadcastReturn = false);
 	//
 	// End Actor Management
 
@@ -81,6 +85,9 @@ public:
 	//
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Reset Pool"), Category = "Pool")
 		virtual void ResetPool();
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Add Actors to Pool by Class"), Category = "Pool")
+		virtual void AddActorsByClass(TSubclassOf<AActor> Class, int32 Amount);
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Remove all Actors From Pool by Class"), Category = "Pool")
 		virtual void RemoveAllActorsFromPoolByClass(TSubclassOf<AActor> Class);
