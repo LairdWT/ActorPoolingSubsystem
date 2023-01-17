@@ -47,7 +47,7 @@ void UActorPoolSubsystem::InitPool(TSubclassOf<AActor> Class, int32 Amount)
 		TObjectPtr<AActor> Actor = this->GetWorld()->SpawnActor<AActor>(Class, FTransform::Identity, SpawnParameters);
 		if ((Actor))
 		{
-			SetActorInactive_LowLevel(Actor);
+			SetActorStandby_LowLevel(Actor);
 			ClassArray.Push(Actor);
 		}
 	}
@@ -163,29 +163,29 @@ void UActorPoolSubsystem::ReturnActorToPool(AActor* Actor, bool BroadcastReturn)
 			BroadcastActorReturned(ActorIn.Get(), ActorIn->GetTransform());
 		}
 
-		// Set incative - find or create ClassArray - then push actor onto the ClassArray
-		SetActorInactive_LowLevel(ActorIn);
-		TPoolArray& ClassArray = Pool.FindOrAdd(ActorIn->GetClass());
-		ClassArray.Push(ActorIn);
-
 		// Try to fire OnDestroy event from interface
 		if (ActorIn->GetClass()->ImplementsInterface(UActorPoolInterface::StaticClass()))
 		{
 			IActorPoolInterface::Execute_Pool_OnDestroy(ActorIn);
 		}
+
+		// Set incative - find or create ClassArray - then push actor onto the ClassArray
+		SetActorStandby_LowLevel(ActorIn);
+		TPoolArray& ClassArray = Pool.FindOrAdd(ActorIn->GetClass());
+		ClassArray.Push(ActorIn);
 	}
 }
 
-void UActorPoolSubsystem::SetActorInactive(AActor* Actor)
+void UActorPoolSubsystem::SetActorStandby(AActor* Actor)
 {
 	if (IsValid(Actor))
 	{
 		TObjectPtr<AActor> ActorPtr(Actor);
-		SetActorInactive_LowLevel(ActorPtr);
+		SetActorStandby_LowLevel(ActorPtr);
 	}
 }
 
-void UActorPoolSubsystem::SetActorInactive_LowLevel(TObjectPtr<AActor> Actor)
+void UActorPoolSubsystem::SetActorStandby_LowLevel(TObjectPtr<AActor> Actor)
 {
 	// turn off tick, disable collision, turn off visibility, reset transform, clear owner
 	Actor->SetActorTickEnabled(false);

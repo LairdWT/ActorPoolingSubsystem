@@ -55,9 +55,9 @@ public:
 	// Functions marked "_LowLevel" are for c++ use, can skip some Blueprint required type conversions
 	//
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Set Actor Inactive"), Category = "Pool")
-		void SetActorInactive(AActor* Actor);
+		void SetActorStandby(AActor* Actor);
 
-		void inline SetActorInactive_LowLevel(TObjectPtr<AActor> Actor);
+		void inline SetActorStandby_LowLevel(TObjectPtr<AActor> Actor);
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Set Actor Active"), Category = "Pool")
 		void SetActorActive(AActor* Actor, const FTransform& Transform, AActor* Owner);
