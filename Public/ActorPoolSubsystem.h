@@ -10,9 +10,8 @@
 
 #include "ActorPoolSubsystem.generated.h"
 
-
 // Broadcast Spawn to listeners
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FSpawnDelegate, AActor*, SpawnedActor, const FTransform&, SpawnTransform)
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FSpawnDelegate, AActor*, Actor, const FTransform&, Transform)
 
 UCLASS()
 class ACTORPOOLINGSUBSYSTEM_API UActorPoolSubsystem : public UGameInstanceSubsystem
@@ -34,9 +33,12 @@ private:
 	//
 	FActorSpawnParameters SpawnParameters;
 
-	// OnSpawn Delegate
+	// OnSpawn and OnReturn Delegate
 	UPROPERTY(BlueprintAssignable)
-	FSpawnDelegate OnActorSpawnDelegate;
+		FSpawnDelegate OnActorSpawnDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+		FSpawnDelegate OnActorReturnToPoolDelegate;
 	
 	// Handle pool reset when level is changed
 	void HandleLevelChanged(ULevel*, UWorld*);
@@ -68,9 +70,11 @@ public:
 		TObjectPtr<AActor> inline SpawnActor_LowLevel(TSubclassOf<AActor> Class, const FTransform& Transform, const ESpawnActorCollisionHandlingMethod CollisionHandling = ESpawnActorCollisionHandlingMethod::AlwaysSpawn, TWeakObjectPtr<AActor> Owner = nullptr, bool BroadcastSpawn = false);
 private:
 		void BroadcastActorSpawned(AActor* SpawnedActor, const FTransform& SpawnLocation);
+
+		void BroadcastActorReturned(AActor* SpawnedActor, const FTransform& SpawnLocation);
 public:
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Return Actor To Pool", DefaultToSelf = "Actor"), Category = "Pool")
-		void ReturnActorToPool(AActor* Actor);
+		void ReturnActorToPool(AActor* Actor, bool BroadcastReturn = false);
 	//
 	// End Actor Management
 

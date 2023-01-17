@@ -18,15 +18,19 @@ class ACTORPOOLINGSUBSYSTEM_API IActorPoolInterface
 
 public:
 
-	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnDestroy (Pool)"), Category = "Pool")
+	// Blueprint Events
+	//
+	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnCreate (Pool)"), Category = "Pool")
 		void Pool_OnCreate();
 
-	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnCreate (Pool)"), Category = "Pool")
+	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnDestroy (Pool)"), Category = "Pool")
 		void Pool_OnDestroy();
 
-	virtual void OnCreate_LowLevel();
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "Enable Optimizations (Pool)"), Category = "Pool")
+		void Pool_EnableOptimizations();
 
-	virtual void OnDestroy_LowLevel();
-
-	virtual void ReturnActorToPool();
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "Disable Optimizations (Pool)"), Category = "Pool")
+		void Pool_DisableOptimizations();
+	//
+	// End Bleuprint Events
 };

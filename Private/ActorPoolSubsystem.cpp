@@ -55,7 +55,7 @@ void UActorPoolSubsystem::InitPool(TSubclassOf<AActor> Class, int32 Amount)
 
 void UActorPoolSubsystem::HandleLevelChanged(ULevel*, UWorld*)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Pool Reset"));
+	UE_LOG(LogTemp, Warning, TEXT("Actor Pool Reset"));
 	ResetPool();
 }
 
@@ -147,11 +147,21 @@ void UActorPoolSubsystem::BroadcastActorSpawned(AActor* SpawnedActor, const FTra
 	OnActorSpawnDelegate.Broadcast(SpawnedActor, SpawnLocation);
 }
 
-void UActorPoolSubsystem::ReturnActorToPool(AActor* Actor)
+void UActorPoolSubsystem::BroadcastActorReturned(AActor* SpawnedActor, const FTransform& SpawnLocation)
+{
+	OnActorReturnToPoolDelegate.Broadcast(SpawnedActor, SpawnLocation);
+}
+
+void UActorPoolSubsystem::ReturnActorToPool(AActor* Actor, bool BroadcastReturn)
 {
 	if (IsValid(Actor))
 	{
 		TObjectPtr<AActor> ActorIn(Actor);
+
+		if (BroadcastReturn)
+		{
+			BroadcastActorReturned(ActorIn.Get(), ActorIn->GetTransform());
+		}
 
 		// Set incative - find or create ClassArray - then push actor onto the ClassArray
 		SetActorInactive_LowLevel(ActorIn);
@@ -183,6 +193,12 @@ void UActorPoolSubsystem::SetActorInactive_LowLevel(TObjectPtr<AActor> Actor)
 	Actor->SetActorHiddenInGame(true);
 	Actor->SetActorTransform(FTransform::Identity);
 	Actor->SetOwner(nullptr);
+
+	// Try to fire Enable Optimizations event from interface
+	if (Actor->GetClass()->ImplementsInterface(UActorPoolInterface::StaticClass()))
+	{
+		IActorPoolInterface::Execute_Pool_EnableOptimizations(Actor);
+	}
 }
 
 void UActorPoolSubsystem::SetActorActive(AActor* Actor, const FTransform& Transform, AActor* Owner)
@@ -205,4 +221,10 @@ void UActorPoolSubsystem::SetActorActive_LowLevel(TObjectPtr<AActor> Actor, cons
 	Actor->SetActorHiddenInGame(false);
 	Actor->SetActorEnableCollision(true);
 	Actor->SetOwner(Owner.Get());
+
+	// Try to fire Enable Optimizations event from interface
+	if (Actor->GetClass()->ImplementsInterface(UActorPoolInterface::StaticClass()))
+	{
+		IActorPoolInterface::Execute_Pool_DisableOptimizations(Actor);
+	}
 }
