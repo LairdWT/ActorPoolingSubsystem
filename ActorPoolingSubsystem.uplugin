@@ -2,7 +2,7 @@
 	"FileVersion": 3,
 	"Version": 1,
 	"VersionName": "1.0",
-	"EngineVersion": "5.1",
+	"EngineVersion": "5.1.0",
 	"FriendlyName": "Actor Pooling Subsystem",
 	"Description": "An Actor Pooling subsystem for performant spawning and despawning of actors",
 	"Category": "Other",

@@ -27,7 +27,6 @@ protected:
 	virtual void BeginPlay() override;
 
 	void inline GetPoolSubsystemReference();
-
 public:		
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Spawn Actor from Pool"), Category = "Spawning Pool")

@@ -18,7 +18,6 @@ void UActorPoolSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	{
 		FWorldDelegates::LevelRemovedFromWorld.AddUObject(this, &UActorPoolSubsystem::HandleLevelChanged);
 	}
-
 }
 
 void UActorPoolSubsystem::Deinitialize()
@@ -215,7 +214,7 @@ void UActorPoolSubsystem::SetActorStandby_LowLevel(TObjectPtr<AActor> Actor)
 	// Try to fire Enable Optimizations event from interface
 	if (Actor->GetClass()->ImplementsInterface(UActorPoolInterface::StaticClass()))
 	{
-		IActorPoolInterface::Execute_Pool_EnableOptimizations(Actor);
+		IActorPoolInterface::Execute_Pool_EnableOptimisations(Actor);
 	}
 }
 
@@ -243,6 +242,6 @@ void UActorPoolSubsystem::SetActorActive_LowLevel(TObjectPtr<AActor> Actor, cons
 	// Try to fire Enable Optimizations event from interface
 	if (Actor->GetClass()->ImplementsInterface(UActorPoolInterface::StaticClass()))
 	{
-		IActorPoolInterface::Execute_Pool_DisableOptimizations(Actor);
+		IActorPoolInterface::Execute_Pool_DisableOptimisations(Actor);
 	}
 }

@@ -26,11 +26,11 @@ public:
 	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "OnDestroy (Pool)"), Category = "Pool")
 		void Pool_OnDestroy();
 
-	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "Enable Optimizations (Pool)"), Category = "Pool")
-		void Pool_EnableOptimizations();
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "Enable Optimisations (Pool)"), Category = "Pool")
+		void Pool_EnableOptimisations();
 
-	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "Disable Optimizations (Pool)"), Category = "Pool")
-		void Pool_DisableOptimizations();
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "Disable Optimisations (Pool)"), Category = "Pool")
+		void Pool_DisableOptimisations();
 	//
 	// End Bleuprint Events
 };

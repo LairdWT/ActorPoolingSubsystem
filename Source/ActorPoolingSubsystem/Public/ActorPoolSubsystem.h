@@ -32,14 +32,14 @@ private:
 	// Pool params
 	//
 	FActorSpawnParameters SpawnParameters;
-
+public:
 	// OnSpawn and OnReturn Delegate
 	UPROPERTY(BlueprintAssignable)
 		FSpawnDelegate OnActorSpawnDelegate;
 
 	UPROPERTY(BlueprintAssignable)
 		FSpawnDelegate OnActorReturnToPoolDelegate;
-	
+private:
 	// Handle pool reset when level is changed
 	void HandleLevelChanged(ULevel*, UWorld*);
 
