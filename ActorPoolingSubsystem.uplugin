@@ -9,18 +9,18 @@
 	"CreatedBy": "Laird Shingleton",
 	"CreatedByURL": "www.github.com/lairdwt",
 	"DocsURL": "",
-	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/...to be added after submission",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/29d4ef0f07b5408fb3cb4c847ba1839b",
 	"SupportURL": "",
 	"CanContainContent": true,
 	"IsBetaVersion": false,
 	"IsExperimentalVersion": false,
 	"Installed": false,
-	"Modules": 
-	[
+	"Modules": [
 		{
 			"Name": "ActorPoolingSubsystem",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"WhitelistPlatforms": [ "Win64", "Android" ]
 		}
 	]
 }

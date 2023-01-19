@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// Laird Shingleton 2023
 
 #include "ActorPoolingSubsystem.h"
 
